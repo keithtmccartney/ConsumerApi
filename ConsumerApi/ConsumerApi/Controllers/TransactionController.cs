@@ -12,17 +12,17 @@ using ConsumerApi.Models;
 
 namespace ConsumerApi.Controllers
 {
-    public class TransactionsController : ApiController
+    public class TransactionController : ApiController
     {
         private Models.TransactionContext db = new Models.TransactionContext();
 
-        // GET: api/Transactions
+        // GET: api/Transaction
         public IQueryable<Transaction> GetTransactions()
         {
             return db.Transactions;
         }
 
-        // GET: api/Transactions/5
+        // GET: api/Transaction/5
         [ResponseType(typeof(Transaction))]
         public IHttpActionResult GetTransaction(int id)
         {
@@ -35,7 +35,7 @@ namespace ConsumerApi.Controllers
             return Ok(transaction);
         }
 
-        // PUT: api/Transactions/5
+        // PUT: api/Transaction/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutTransaction(int id, Transaction transaction)
         {
@@ -70,7 +70,7 @@ namespace ConsumerApi.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Transactions
+        // POST: api/Transaction
         [ResponseType(typeof(Transaction))]
         public IHttpActionResult PostTransaction(Transaction transaction)
         {
@@ -85,7 +85,7 @@ namespace ConsumerApi.Controllers
             return CreatedAtRoute("DefaultApi", new { id = transaction.TransactionId }, transaction);
         }
 
-        // DELETE: api/Transactions/5
+        // DELETE: api/Transaction/5
         [ResponseType(typeof(Transaction))]
         public IHttpActionResult DeleteTransaction(int id)
         {
