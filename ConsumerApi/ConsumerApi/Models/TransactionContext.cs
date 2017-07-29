@@ -6,15 +6,8 @@ using System.Data.Entity;
 
 namespace ConsumerApi.Models
 {
-    public class TransactionContext : DbContext
+    public class TransactionContext : List<Transaction>
     {
-        public TransactionContext() : base("name=TransactionContext")
-        {
-        }
-
-        public DbSet<Transaction> Transactions
-        {
-            get; set;
-        }
+        public List<Transaction> Transactions = new List<Transaction>();
     }
 }

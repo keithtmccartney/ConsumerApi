@@ -11,49 +11,49 @@ namespace ConsumerApi.Repositories
     public class TransactionRepository : ITransactionRepository
     {
         private readonly TransactionContext _context;
+        private int counter = 1;
 
         public TransactionRepository(TransactionContext context)
         {
             _context = context;
         }
 
-        public Transaction Add(Transaction transaction)
+        public Transaction Add(Transaction _transaction)
         {
-            var _transaction = _context.Transactions.Add(new Transaction() { TransactionId = transaction.TransactionId });
+            if (_transaction == null)
+                throw new ArgumentNullException("_transaction");
 
-            _context.SaveChanges();
+            _transaction.TransactionId = counter++;
 
-            return transaction;
+            _context.Add(_transaction);
+
+            return _transaction;
         }
 
-        public void Delete(Transaction transaction)
+        public void Delete(Transaction _transaction)
         {
-            _context.Transactions.Remove(transaction);
-            _context.SaveChanges();
+            _context.Remove(_transaction);
         }
 
         public IEnumerable<Transaction> GetAll()
         {
-            return _context.Transactions.ToList();
+            return _context.ToList();
         }
 
         public Transaction GetById(int id)
         {
-            return _context.Transactions.SingleOrDefault(x => x.TransactionId == id);
+            return _context.SingleOrDefault(x => x.TransactionId == id);
         }
 
-        public void Update(Transaction transaction)
+        public void Update(Transaction _transaction)
         {
-            var _transaction = GetById(transaction.TransactionId);
+            int transaction = _context.FindIndex(b => b.TransactionId == _transaction.TransactionId);
 
-            _transaction.TransactionDate = transaction.TransactionDate;
-            _transaction.TransactionAmount = transaction.TransactionAmount;
-            _transaction.CreatedDate = transaction.CreatedDate;
-            _transaction.ModifiedDate = transaction.ModifiedDate;
-            _transaction.CurrencyCode = transaction.CurrencyCode;
-
-            _context.Entry(_transaction).CurrentValues.SetValues(transaction);
-            _context.SaveChanges();
+            if (transaction != -1)
+            {
+                _context.RemoveAt(transaction);
+                _context.Add(_transaction);
+            }
         }
     }
 }

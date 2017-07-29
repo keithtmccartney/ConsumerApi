@@ -15,9 +15,8 @@ namespace ConsumerApi.Controllers
 {
     public class TransactionController : ApiController
     {
-        private Models.TransactionContext db = new Models.TransactionContext();
-
         private readonly ITransactionRepository _transactionRepository;
+        private readonly Models.TransactionContext _context;
 
         public TransactionController(ITransactionRepository transactionRepository)
         {
@@ -51,13 +50,6 @@ namespace ConsumerApi.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-            var _transaction = _transactionRepository.GetById(id);
-
-            if (_transaction == null)
-            {
-                return NotFound();
             }
 
             try
@@ -111,18 +103,9 @@ namespace ConsumerApi.Controllers
             return Ok(_transaction);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         private bool TransactionExists(int id)
         {
-            return db.Transactions.Count(e => e.TransactionId == id) > 0;
+            return _context.Count(e => e.TransactionId == id) > 0;
         }
     }
 }
