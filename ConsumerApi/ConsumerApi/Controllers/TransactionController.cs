@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using ConsumerApi.Interfaces;
 using ConsumerApi.Models;
 
 namespace ConsumerApi.Controllers
@@ -16,44 +17,54 @@ namespace ConsumerApi.Controllers
     {
         private Models.TransactionContext db = new Models.TransactionContext();
 
-        // GET: api/Transaction
-        public IQueryable<Transaction> GetTransactions()
+        private readonly ITransactionRepository _transactionRepository;
+
+        public TransactionController(ITransactionRepository transactionRepository)
         {
-            return db.Transactions;
+            _transactionRepository = transactionRepository;
+        }
+
+        // GET: api/Transaction
+        public IEnumerable<Transaction> GetTransactions()
+        {
+            return _transactionRepository.GetAll();
         }
 
         // GET: api/Transaction/5
         [ResponseType(typeof(Transaction))]
         public IHttpActionResult GetTransaction(int id)
         {
-            Transaction transaction = db.Transactions.Find(id);
-            if (transaction == null)
+            var _transaction = _transactionRepository.GetById(id);
+
+            if (_transaction == null)
             {
                 return NotFound();
             }
 
-            return Ok(transaction);
+            return Ok(_transaction);
         }
 
         // PUT: api/Transaction/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutTransaction(int id, Transaction transaction)
+        public IHttpActionResult PutTransaction(int id, Transaction _parameter)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != transaction.TransactionId)
-            {
-                return BadRequest();
-            }
+            var _transaction = _transactionRepository.GetById(id);
 
-            db.Entry(transaction).State = EntityState.Modified;
+            if (_transaction == null)
+            {
+                return NotFound();
+            }
 
             try
             {
-                db.SaveChanges();
+                _parameter.TransactionId = id;
+
+                _transactionRepository.Update(_parameter);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,33 +83,32 @@ namespace ConsumerApi.Controllers
 
         // POST: api/Transaction
         [ResponseType(typeof(Transaction))]
-        public IHttpActionResult PostTransaction(Transaction transaction)
+        public IHttpActionResult PostTransaction(Transaction _parameter)
         {
-            if (!ModelState.IsValid)
+            if (_parameter == null)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Transactions.Add(transaction);
-            db.SaveChanges();
+            var _transaction = _transactionRepository.Add(_parameter);
 
-            return CreatedAtRoute("DefaultApi", new { id = transaction.TransactionId }, transaction);
+            return CreatedAtRoute("DefaultApi", new { id = _transaction.TransactionId }, _transaction);
         }
 
         // DELETE: api/Transaction/5
         [ResponseType(typeof(Transaction))]
         public IHttpActionResult DeleteTransaction(int id)
         {
-            Transaction transaction = db.Transactions.Find(id);
-            if (transaction == null)
+            var _transaction = _transactionRepository.GetById(id);
+
+            if (_transaction == null)
             {
                 return NotFound();
             }
 
-            db.Transactions.Remove(transaction);
-            db.SaveChanges();
+            _transactionRepository.Delete(_transaction);
 
-            return Ok(transaction);
+            return Ok(_transaction);
         }
 
         protected override void Dispose(bool disposing)
