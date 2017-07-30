@@ -23,13 +23,17 @@ namespace ConsumerApi.Controllers
             _transactionRepository = transactionRepository;
         }
 
-        // GET: api/Transaction
+        // GET: /transaction/get
+        [HttpGet]
+        [Route("transaction/get", Name = "GetAllTransactions")]
         public IEnumerable<Transaction> GetTransactions()
         {
             return _transactionRepository.GetAll();
         }
 
-        // GET: api/Transaction/5
+        // GET: /transaction/get/5
+        [HttpGet]
+        [Route("transaction/get/{id}", Name = "GetTransactionByID")]
         [ResponseType(typeof(Transaction))]
         public IHttpActionResult GetTransaction(int id)
         {
@@ -43,7 +47,9 @@ namespace ConsumerApi.Controllers
             return Ok(_transaction);
         }
 
-        // PUT: api/Transaction/5
+        // PUT: /transaction/put/5
+        [HttpPut]
+        [Route("transaction/put/{id}", Name = "PutTransactionByID")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutTransaction(int id, Transaction _parameter)
         {
@@ -73,7 +79,9 @@ namespace ConsumerApi.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Transaction
+        // POST: /transaction/post
+        [HttpPost]
+        [Route("transaction/post", Name = "PostAllTransactions")]
         [ResponseType(typeof(Transaction))]
         public IHttpActionResult PostTransaction(Transaction _parameter)
         {
@@ -84,10 +92,12 @@ namespace ConsumerApi.Controllers
 
             var _transaction = _transactionRepository.Add(_parameter);
 
-            return CreatedAtRoute("DefaultApi", new { id = _transaction.TransactionId }, _transaction);
+            return CreatedAtRoute("DefaultApi", new { controller = "transaction", id = _transaction.TransactionId }, _transaction);
         }
 
-        // DELETE: api/Transaction/5
+        // DELETE: /transaction/delete/5
+        [HttpDelete]
+        [Route("transaction/delete/{id}", Name = "DeleteTransactionByID")]
         [ResponseType(typeof(Transaction))]
         public IHttpActionResult DeleteTransaction(int id)
         {
