@@ -34,4 +34,4 @@ There's the basis for some SpecFlow stuff in here, where I'm yet needing to writ
 	"Merchant": "Def ghi 456"
 }
 
-* [The URL for everything](http://localhost:50908/transaction) "Pass '.../transaction/get', '.../transaction/get/{id}', .../transaction/post' (use the JSON above as example Body data in Postman), '.../transaction/delete/{id}'"
+* [The URL for everything](http://localhost:50908/transaction) "Pass '.../transaction/get' (Gets everything), '.../transaction/get/{id}' (Gets something specific), .../transaction/post' (Posts something; use the JSON above as example Body data in Postman), '.../transaction/put/{id}' (Updates something specific), '.../transaction/delete/{id}' (Deletes something specific)"
