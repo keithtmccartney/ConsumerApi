@@ -1,11 +1,11 @@
-﻿using OpenQA.Selenium;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
 using TechTalk.SpecFlow;
-using ConsumerApi.Tests.SupportFiles;
 
 namespace ConsumerApi.Tests.Steps
 {
@@ -13,9 +13,8 @@ namespace ConsumerApi.Tests.Steps
     public class Navigation
     {
         [Given(@"I have navigated to the Controller...")]
-        public void NavigateToController()
+        public void Abc()
         {
-            PropertiesCollection.driver.Navigate().GoToUrl("");
         }
 
         [When(@"I see...")]

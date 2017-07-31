@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        function _getAll() {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:50908/transaction/get",
+                contentType: "json",
+                dataType: "json",
+                cache: false,
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        var jsonData = JSON.stringify(value);
+                        var objData = $.parseJSON(jsonData);
+                        var TransactionId = objData.TransactionId;
+                        var TransactionDate = objData.TransactionDate;
+                        var Description = objData.Description;
+                        var TransactionAmount = objData.TransactionAmount;
+                        var CreatedDate = objData.CreatedDate;
+                        var ModifiedDate = objData.ModifiedDate;
+                        var CurrencyCode = objData.CurrencyCode;
+                        var Merchant = objData.Merchant;
+
+                        $('<tr><td>' + TransactionId + '</td><td>' + TransactionDate + '</td><td>' + Description + '<tr><td>' + TransactionAmount + '<tr><td>' + CreatedDate + '<tr><td>' + ModifiedDate + '<tr><td>' + CurrencyCode + '<tr><td>' + Merchant + '</td></tr>').appendTo('#transaction');
+                    });
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+
+        function _getById() {
+            var id = document.getElementById("transactionId").value;
+
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:50908/transaction/get/" + id,
+                contentType: "json",
+                dataType: "json",
+                cache: false,
+                success: function (data) {
+                    var jsonData = JSON.stringify(data);
+                    var objData = $.parseJSON(jsonData);
+                    var TransactionId = objData.TransactionId;
+                    var TransactionDate = objData.TransactionDate;
+                    var Description = objData.Description;
+                    var TransactionAmount = objData.TransactionAmount;
+                    var CreatedDate = objData.CreatedDate;
+                    var ModifiedDate = objData.ModifiedDate;
+                    var CurrencyCode = objData.CurrencyCode;
+                    var Merchant = objData.Merchant;
+
+                    $('<tr><td>' + TransactionId + '</td><td>' + TransactionDate + '</td><td>' + Description + '<tr><td>' + TransactionAmount + '<tr><td>' + CreatedDate + '<tr><td>' + ModifiedDate + '<tr><td>' + CurrencyCode + '<tr><td>' + Merchant + '</td></tr>').appendTo('#transaction');
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+
+        function _add() {
+            var TransactionId = document.getElementById("transactionId").value;
+            var TransactionDate = document.getElementById("transactionDate").value;
+            var Description = document.getElementById("description").value;
+            var TransactionAmount = document.getElementById("transactionAmount").value;
+            var CreatedDate = document.getElementById("createdDate").value;
+            var ModifiedDate = document.getElementById("modifiedDate").value;
+            var CurrencyCode = document.getElementById("currencyCode").value;
+            var Merchant = document.getElementById("merchant").value;
+
+            var _data = {
+                "TransactionId": TransactionId,
+                "TransactionDate": TransactionDate,
+                "Description": Description,
+                "TransactionAmount": TransactionAmount,
+                "CreatedDate": CreatedDate,
+                "ModifiedDate": ModifiedDate,
+                "CurrencyCode": CurrencyCode,
+                "Merchant": Merchant
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:50908/transaction/post/",
+                data: JSON.stringify(_data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                processData: true,
+                cache: false,
+                success: function (data, status, jqXHR) {
+                    alert(data);
+                },
+                error: function (xhr) {
+                    alert(xhr.ResponseText);
+                }
+            });
+        }
+
+        function _update() {
+            var TransactionId = document.getElementById("transactionId").value;
+            var TransactionDate = document.getElementById("transactionDate").value;
+            var Description = document.getElementById("description").value;
+            var TransactionAmount = document.getElementById("transactionAmount").value;
+            var CreatedDate = document.getElementById("createdDate").value;
+            var ModifiedDate = document.getElementById("modifiedDate").value;
+            var CurrencyCode = document.getElementById("currencyCode").value;
+            var Merchant = document.getElementById("merchant").value;
+
+            var _data = {
+                "TransactionId": TransactionId,
+                "TransactionDate": TransactionDate,
+                "Description": Description,
+                "TransactionAmount": TransactionAmount,
+                "CreatedDate": CreatedDate,
+                "ModifiedDate": ModifiedDate,
+                "CurrencyCode": CurrencyCode,
+                "Merchant": Merchant
+            };
+
+            $.ajax({
+                type: "PUT",
+                url: "http://localhost:50908/transaction/put/" + id,
+                data: JSON.stringify(_data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                processData: true,
+                cache: false,
+                success: function (data, status, jqXHR) {
+                    alert(data);
+                },
+                error: function (xhr) {
+                    alert(xhr.ResponseText);
+                }
+            });
+        }
+
+        function _delete() {
+            var id = document.getElementById("transactionId").value;
+
+            $.ajax({
+                type: "DELETE",
+                url: "http://localhost:50908/transaction/delete/" + id,
+                contentType: "json",
+                dataType: "json",
+                cache: false,
+                success: function (data) {
+                    alert(data);
+                },
+                error: function () {
+                    alert(xhr.ResponseText);
+                }
+            });
+        }
+
+        function _reset() {
+            $("tr:gt(0)").remove();
+        }
+    </script>
+
+    <style type="text/css">
+        input {
+            width: 150px;
+        }
+
+        table {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            Transaction ID:
+            <input id="transactionId" type="number" min="1" />
+            Transaction Date:
+            <input id="transactionDate" type="date" />
+            Description:
+            <input id="description" type="text" />
+            Transaction Amount:
+            <input id="transactionAmount" type="number" />
+            Created Date:
+            <input id="createdDate" type="date" />
+            Modified Date:
+            <input id="modifiedDate" type="date" />
+            Currency Code:
+            <input id="currencyCode" type="text" />
+            Merchant:
+            <input id="merchant" type="text" /><br /><br />
+            <input id="getById" type="button" value="Get Transaction By ID" onclick="_getById()" />
+            <input id="getAll" type="button" value="Get All Transactions" onclick="_getAll()" /><br /><br />
+            <input id="add" type="button" value="Add Transaction" onclick="_add()" />
+            <input id="update" type="button" value="Update Transaction" onclick="_update()" />
+            <input id="delete" type="button" value="Delete Transaction" onclick="_delete()" /><br /><br /><br />
+
+            <table border="1" id="transaction">
+                <tr>
+                    <td>Transaction ID</td>
+                    <td>Transaction Date</td>
+                    <td>Description</td>
+                    <td>Transaction Amount</td>
+                    <td>Created Date</td>
+                    <td>Modified Date</td>
+                    <td>Currency Code</td>
+                    <td>Merchant</td>
+                </tr>
+            </table><br /><br />
+
+            <input id="reset" type="button" value="Reset" onclick="_reset()" />
+        </div>
+    </form>
+</body>
+</html>

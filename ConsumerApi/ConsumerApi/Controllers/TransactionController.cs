@@ -23,12 +23,25 @@ namespace ConsumerApi.Controllers
             _transactionRepository = transactionRepository;
         }
 
+        /*List<Transaction> _context = new List<Transaction>();*/
+
+        /*public TransactionController()
+        {
+        }
+
+        public TransactionController(List<Transaction> _transaction)
+        {
+            this._context = _transaction;
+        }*/
+
         // GET: /transaction/get
         [HttpGet]
         [Route("transaction/get", Name = "GetAllTransactions")]
         public IEnumerable<Transaction> GetTransactions()
         {
             return _transactionRepository.GetAll();
+
+            /*return _context;*/
         }
 
         // GET: /transaction/get/5
@@ -38,6 +51,8 @@ namespace ConsumerApi.Controllers
         public IHttpActionResult GetTransaction(int id)
         {
             var _transaction = _transactionRepository.GetById(id);
+
+            /*var _transaction = _context.FirstOrDefault((p) => p.TransactionId == id);*/
 
             if (_transaction == null)
             {
