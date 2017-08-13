@@ -1,17 +1,13 @@
 # ConsumerApi
 A .NET-based API to allow a consumer to save, update and get transactions.
 
-a short description of your API what have used, debugging instructions (don't forget point 1) any comments you wish to add
-The time you spent on the project.
-If you ran out of time, but would have liked to implemented certain features, tell us why.
-
 ## What's inside, right now?
 
 This is an ASP.NET Web Application in 4.6.1 with a Web API template, there is currently no Authentication logic built into the application.
 
 There is a selection of different bits and pieces in here including a Unity IoC Dependency Resolver for a custom Controller with GET/POST/PUT/DELETE logic wrapped-in as core functionality.
 
-Everything is nicely separeted out into Interfaces/Repositories/Containers, and Step structure/Support Files...
+Everything is nicely separated out into Interfaces/Repositories/Containers, and Step structure/Support Files...
 
 ## What's to be done, in the future?
 
